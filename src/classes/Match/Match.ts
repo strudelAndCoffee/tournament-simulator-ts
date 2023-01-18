@@ -64,7 +64,7 @@ export default class Match {
 
       if (p1_roll.attack > p2_roll.block)
         p1_score += p1_roll.attack - p2_roll.armor
-      else if (p2_roll.attack > p1_roll.block)
+      if (p2_roll.attack > p1_roll.block)
         p2_score += p2_roll.attack - p1_roll.armor
 
       if (p1_score > p2_score) p1 = true
