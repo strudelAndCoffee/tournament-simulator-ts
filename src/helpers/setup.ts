@@ -7,7 +7,7 @@ import {
   Berserker,
   Ninja,
 } from '../classes/Player/index.js'
-import { shuffleArray, names } from './index.js'
+import { shuffleArray } from './index.js'
 
 const TOTAL_PLAYERS = 48
 const NAMES = [
@@ -90,37 +90,37 @@ const GROUP_STAGE_PAIRS = [
 
 function generatePlayers() {
   const STARTING_PLAYERS = []
-  shuffleArray(names)
+  shuffleArray(NAMES)
 
   for (let i = 0; i < TOTAL_PLAYERS; i++) {
     if (i % 6 === 0) {
       let player_class = new Knight()
-      let player = new Player(i, names[i], player_class)
+      let player = new Player(i, NAMES[i], player_class)
       STARTING_PLAYERS.push(player)
     }
     if (i % 6 === 1) {
       let player_class = new Samurai()
-      let player = new Player(i, names[i], player_class)
+      let player = new Player(i, NAMES[i], player_class)
       STARTING_PLAYERS.push(player)
     }
     if (i % 6 === 2) {
       let player_class = new Gladiator()
-      let player = new Player(i, names[i], player_class)
+      let player = new Player(i, NAMES[i], player_class)
       STARTING_PLAYERS.push(player)
     }
     if (i % 6 === 3) {
       let player_class = new Berserker()
-      let player = new Player(i, names[i], player_class)
+      let player = new Player(i, NAMES[i], player_class)
       STARTING_PLAYERS.push(player)
     }
     if (i % 6 === 4) {
       let player_class = new Ninja()
-      let player = new Player(i, names[i], player_class)
+      let player = new Player(i, NAMES[i], player_class)
       STARTING_PLAYERS.push(player)
     }
     if (i % 6 === 5) {
       let player_class = new Vanguard()
-      let player = new Player(i, names[i], player_class)
+      let player = new Player(i, NAMES[i], player_class)
       STARTING_PLAYERS.push(player)
     }
   }
