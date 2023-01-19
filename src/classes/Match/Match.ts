@@ -1,6 +1,6 @@
-import { Player, PlayerRollType } from '../Player/Player.js'
+import Player, { PlayerRollType } from '../Player/Player.js'
 
-type RoundResultType = {
+export type RoundResultType = {
   p1: boolean
   p2: boolean
   tie: boolean

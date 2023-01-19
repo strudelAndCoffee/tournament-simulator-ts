@@ -6,7 +6,7 @@ import {
   Samurai,
   Berserker,
   Ninja,
-} from './PlayerClass.js'
+} from './index.js'
 
 type Game = {
   [index: string]: number
@@ -22,7 +22,7 @@ export type PlayerRollType = {
   armor: number
 }
 
-export class Player {
+export default class Player {
   public id!: number
   public player_name!: string
   public player_class!:
@@ -54,6 +54,7 @@ export class Player {
     waits: number
     xp_spent: number
   }
+  public stage_id: number
   games: Stage
   rank: {
     global: number
@@ -94,6 +95,7 @@ export class Player {
       xp_spent: 0,
     }
 
+    this.stage_id = 0
     this.games = {
       total: {
         played: 0,
