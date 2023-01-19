@@ -1,58 +1,15 @@
-import {
-  Knight,
-  Vanguard,
-  Gladiator,
-  Samurai,
-  Berserker,
-  Ninja,
-} from './classes/Player/PlayerClass.js'
-import Player from './classes/Player/Player.js'
-import Match from './classes/Match/Match.js'
-import { shuffleArray, names } from './helpers/index.js'
+import { generatePlayers } from './helpers/setup.js'
+import { qualifierStage } from './stages/index.js'
 
-const TOTAL_PLAYERS = 48
-const STARTING_PLAYERS: Player[] = []
-
-function generatePlayers() {
-  shuffleArray(names)
-  for (let i = 0; i < TOTAL_PLAYERS; i++) {
-    if (i % 6 === 0) {
-      let player_class = new Knight()
-      let player = new Player(i, names[i], player_class)
-      STARTING_PLAYERS.push(player)
-    }
-    if (i % 6 === 1) {
-      let player_class = new Samurai()
-      let player = new Player(i, names[i], player_class)
-      STARTING_PLAYERS.push(player)
-    }
-    if (i % 6 === 2) {
-      let player_class = new Gladiator()
-      let player = new Player(i, names[i], player_class)
-      STARTING_PLAYERS.push(player)
-    }
-    if (i % 6 === 3) {
-      let player_class = new Berserker()
-      let player = new Player(i, names[i], player_class)
-      STARTING_PLAYERS.push(player)
-    }
-    if (i % 6 === 4) {
-      let player_class = new Ninja()
-      let player = new Player(i, names[i], player_class)
-      STARTING_PLAYERS.push(player)
-    }
-    if (i % 6 === 5) {
-      let player_class = new Vanguard()
-      let player = new Player(i, names[i], player_class)
-      STARTING_PLAYERS.push(player)
-    }
-  }
-  shuffleArray(STARTING_PLAYERS)
+function startGame() {
+  const STARTING_PLAYERS = generatePlayers()
+  const QUALIFIED_PLAYERS = qualifierStage(STARTING_PLAYERS)
+  // const PLAYOFF_PLAYERS = groupStage(QUALIFIED_PLAYERS)
+  // const QUARTER_FINALISTS = playoffStage(PLAYOFF_PLAYERS)
+  // const SEMI_FINALISTS = quarterFinalStage(QUARTER_FINALISTS)
+  // const { FINALISTS, THIRD_PLACE_CONTENDERS } = semiFinalStage(SEMI_FINALISTS)
+  // const { THIRD_PLACE, FOURTH_PLACE } = thirdPlaceFinal(FINALISTS)
+  // const { CHAMPION, SECOND_PLACE } = grandFinal(FINALISTS)
 }
 
-generatePlayers()
-const match = new Match()
-
-console.log(STARTING_PLAYERS[0], STARTING_PLAYERS[1])
-const result = match.run_round(STARTING_PLAYERS[0], STARTING_PLAYERS[1])
-console.log(result)
+startGame()

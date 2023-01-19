@@ -16,13 +16,13 @@ type Stage = {
 }
 export type PlayerRollType = {
   main_roll: number
-  adv: number
+  adv?: number
   attack: number
   block: number
   armor: number
 }
 
-export default class Player {
+export class Player {
   public id!: number
   public player_name!: string
   public player_class!:
@@ -174,7 +174,23 @@ export default class Player {
     }
   }
 
-  roll(opp: Player) {
+  roll_solo() {
+    const main_roll = rollDice(1, 20)
+
+    let attack = rollDice(this.attack.primary[0], this.attack.primary[1])
+    if (this.attack.secondary)
+      attack += rollDice(this.attack.secondary[0], this.attack.secondary[1])
+
+    let block = rollDice(this.block.primary[0], this.block.primary[1])
+    if (this.block.secondary)
+      block += rollDice(this.block.secondary[0], this.block.secondary[1])
+
+    const armor = rollDice(this.armor[0], this.armor[1])
+
+    return { main_roll, attack, block, armor } as PlayerRollType
+  }
+
+  roll_vs_player(opp: Player) {
     const main_roll = rollDice(1, 20)
     const adv = this.add_advantage(opp.id, opp.class_id)
 
