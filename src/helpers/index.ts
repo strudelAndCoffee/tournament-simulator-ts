@@ -6,7 +6,7 @@ import {
   generateStartingPlayers,
   generateQualifierMatchups,
 } from './setup.js'
-import { rollDice, generateStageIDs } from './mechanics.js'
+import { rollDice, generateStageIDs, sortPlayersByWins } from './mechanics.js'
 
 export {
   randomNumber,
@@ -19,4 +19,5 @@ export {
   generateQualifierMatchups,
   rollDice,
   generateStageIDs,
+  sortPlayersByWins,
 }

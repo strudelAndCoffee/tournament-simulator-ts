@@ -13,9 +13,14 @@ export type RoundStatsType = {
 }
 
 export default class BestOfThree extends Match {
-  static run_match(PLAYERS: Player[], match_ups: MatchUpsType, round: number) {
+  static run_match(
+    PLAYERS: Player[],
+    match_ups: MatchUpsType,
+    round: number,
+    stage: string
+  ) {
     const ROUND_STATS: RoundStatsType = {
-      stage_round: 'Qualifier round ' + round + 1,
+      stage_round: `${stage} round ${round + 1}`,
       matches: [],
     }
 
@@ -46,21 +51,21 @@ export default class BestOfThree extends Match {
         round_results.push(result)
 
         if (result.p1 && (outcomes.p1 > 0 || outcomes.tie === 2)) {
-          p1.win_match('qualifier', p2.id, p2.class_id)
-          p2.lose_match('qualifier')
+          p1.win_match(stage, p2.id, p2.class_id)
+          p2.lose_match(stage)
         } else if (result.p2 && (outcomes.p2 > 0 || outcomes.tie === 2)) {
-          p2.win_match('qualifier', p1.id, p1.class_id)
-          p1.lose_match('qualifier')
+          p2.win_match(stage, p1.id, p1.class_id)
+          p1.lose_match(stage)
         } else {
-          p1.tie_match('qualifier')
-          p2.tie_match('qualifier')
+          p1.tie_match(stage)
+          p2.tie_match(stage)
         }
       } else if (outcomes.p1 === 2) {
-        p1.sweep_match('qualifier', p2.id, p2.class_id)
-        p2.lose_match('qualifier')
+        p1.sweep_match(stage, p2.id, p2.class_id)
+        p2.lose_match(stage)
       } else {
-        p2.sweep_match('qualifier', p1.id, p1.class_id)
-        p1.lose_match('qualifier')
+        p2.sweep_match(stage, p1.id, p1.class_id)
+        p1.lose_match(stage)
       }
 
       ROUND_STATS.matches.push({ match, p1, p2, round_results })
