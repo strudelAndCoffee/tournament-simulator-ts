@@ -1,4 +1,3 @@
-import { swap } from './utils.js'
 import Player from '../classes/Player/Player.js'
 
 function rollDice(min: number, max: number) {

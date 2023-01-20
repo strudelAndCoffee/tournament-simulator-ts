@@ -1,6 +1,6 @@
 import Match, { RoundResultType } from './Match.js'
 import { Player } from '../Player/index.js'
-import { MatchUpsType } from '../../helpers/setup.js'
+import { MatchUpsType } from '../../helpers/matchups.js'
 
 export type RoundStatsType = {
   stage_round: string
@@ -14,20 +14,20 @@ export type RoundStatsType = {
 
 export default class BestOfThree extends Match {
   static run_match(
-    PLAYERS: Player[],
+    players: Player[],
     match_ups: MatchUpsType,
     round: number,
     stage: string
   ) {
-    const ROUND_STATS: RoundStatsType = {
+    const round_stats: RoundStatsType = {
       stage_round: `${stage} round ${round + 1}`,
       matches: [],
     }
 
     match_ups.forEach((match_up, i) => {
       let match = i
-      let p1 = PLAYERS[match_up.A]
-      let p2 = PLAYERS[match_up.B]
+      let p1 = players[match_up.A]
+      let p2 = players[match_up.B]
       let round_results = []
 
       let outcomes = {
@@ -68,9 +68,9 @@ export default class BestOfThree extends Match {
         p1.lose_match(stage)
       }
 
-      ROUND_STATS.matches.push({ match, p1, p2, round_results })
+      round_stats.matches.push({ match, p1, p2, round_results })
     })
 
-    return ROUND_STATS
+    return round_stats
   }
 }

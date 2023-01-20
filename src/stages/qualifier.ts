@@ -6,23 +6,125 @@ import {
   sortPlayersByWins,
 } from '../helpers/index.js'
 
+const STAGE = 'qualifier'
+
 export default function qualifierStage(PLAYERS: Player[]) {
-  const STAGE = 'qualifier'
-  const STAGE_STATS: { [index: number]: RoundStatsType } = {}
+  const stage_stats: { [index: number]: RoundStatsType } = {}
 
   generateStageIDs(PLAYERS)
   const match_ups = generateQualifierMatchups()
   for (let i = 0; i < match_ups.length; i++) {
     let round = i + 1
-    let ROUND_STATS = BestOfThree.run_match(PLAYERS, match_ups[i], i, STAGE)
+    let round_stats = BestOfThree.run_match(PLAYERS, match_ups[i], i, STAGE)
 
-    STAGE_STATS[round] = ROUND_STATS
+    stage_stats[round] = round_stats
   }
 
   sortPlayersByWins(PLAYERS, STAGE)
+  const { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED } =
+    getQualifiedPlayers(PLAYERS)
 
-  PLAYERS.forEach((p) => {
-    console.log(p.xp)
-    console.log(p.games.qualifier)
+  console.log('qualified players', QUALIFIED_PLAYERS.length)
+  QUALIFIED_PLAYERS.forEach((p) => {
+    console.log(
+      p.xp,
+      p.games.qualifier.won,
+      p.games.qualifier.tied,
+      p.games.qualifier.lost,
+      p.games.qualifier.swept
+    )
   })
+  console.log('wildcard players', WILDCARD_PLAYERS.length)
+  WILDCARD_PLAYERS.forEach((p) => {
+    console.log(
+      p.xp,
+      p.games.qualifier.won,
+      p.games.qualifier.tied,
+      p.games.qualifier.lost,
+      p.games.qualifier.swept
+    )
+  })
+  console.log('disqualified players', DISQUALIFIED.length)
+  DISQUALIFIED.forEach((p) => {
+    console.log(
+      p.xp,
+      p.games.qualifier.won,
+      p.games.qualifier.tied,
+      p.games.qualifier.lost,
+      p.games.qualifier.swept
+    )
+  })
+
+  return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
+}
+
+function getQualifiedPlayers(players: Player[]) {
+  const QUALIFIED_PLAYERS: Player[] = []
+  const WILDCARD_PLAYERS: Player[] = []
+  const DISQUALIFIED: Player[] = []
+
+  // QUALIFIED win brackets
+  let qualify = true
+  while (qualify) {
+    let games_won = players[0].games.qualifier.won
+    let player_bracket_count = 0
+    let bracket = []
+
+    players.forEach((p) => {
+      if (p.games.qualifier.won === games_won) player_bracket_count++
+    })
+
+    for (let i = 0; i < player_bracket_count; i++) {
+      let player = players.shift()
+      bracket.push(player)
+    }
+
+    if (QUALIFIED_PLAYERS.length + bracket.length <= 36) {
+      while (bracket.length) {
+        let player = bracket.pop()
+        QUALIFIED_PLAYERS.push(player!)
+      }
+      if (QUALIFIED_PLAYERS.length === 36) qualify = false
+    } else {
+      // WILDCARD win bracket
+      while (bracket.length) {
+        let player = bracket.pop()
+        WILDCARD_PLAYERS.push(player!)
+      }
+      qualify = false
+    }
+  }
+
+  while (players.length) {
+    let player = players.pop()
+    DISQUALIFIED.push(player!)
+  }
+
+  sortPlayersByWins(WILDCARD_PLAYERS, STAGE)
+
+  let second_qualify = true
+  while (second_qualify) {
+    let games_tied = WILDCARD_PLAYERS[0].games.qualifier.tied
+    let player_bracket_count = 0
+    let bracket = []
+
+    WILDCARD_PLAYERS.forEach((p) => {
+      if (p.games.qualifier.tied === games_tied) player_bracket_count++
+    })
+
+    for (let i = 0; i < player_bracket_count; i++) {
+      let player = WILDCARD_PLAYERS.shift()
+      bracket.push(player)
+    }
+
+    if (QUALIFIED_PLAYERS.length + bracket.length <= 36) {
+      while (bracket.length) {
+        let player = bracket.pop()
+        QUALIFIED_PLAYERS.push(player!)
+      }
+    }
+    second_qualify = false
+  }
+
+  return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
 }
