@@ -103,6 +103,8 @@ export default class Player {
         tied: 0,
         lost: 0,
         swept: 0,
+        wildcard_won: 0,
+        wildacrd_lost: 0,
       },
       qualifier: {
         played: 0,
@@ -292,6 +294,19 @@ export default class Player {
   lose_match(stage: string) {
     this.games.total.played++
     this.games.total.lost++
+    this.games[stage].played++
+    this.games[stage].lost++
+  }
+  win_wildcard(stage: string) {
+    this.games.total.played++
+    this.games.total.wildcard_won++
+    this.games[stage].played++
+    this.games[stage].won++
+    this.xp++
+  }
+  lose_wildcard(stage: string) {
+    this.games.total.played++
+    this.games.total.wildcard_lost++
     this.games[stage].played++
     this.games[stage].lost++
   }

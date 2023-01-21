@@ -11,6 +11,15 @@ export type RoundResultType = {
   p1_roll_data: PlayerRollType
   p2_roll_data: PlayerRollType
 }
+export type RoundStatsType = {
+  stage_round: string
+  matches: {
+    match: number
+    p1: Player
+    p2: Player
+    round_results: RoundResultType[]
+  }[]
+}
 
 export default class Match {
   static run_round(player_1: Player, player_2: Player) {

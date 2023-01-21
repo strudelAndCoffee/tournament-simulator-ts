@@ -1,16 +1,6 @@
-import Match, { RoundResultType } from './Match.js'
+import Match, { RoundStatsType } from './Match.js'
 import { Player } from '../Player/index.js'
 import { MatchUpsType } from '../../helpers/matchups.js'
-
-export type RoundStatsType = {
-  stage_round: string
-  matches: {
-    match: number
-    p1: Player
-    p2: Player
-    round_results: RoundResultType[]
-  }[]
-}
 
 export default class BestOfThree extends Match {
   static run_match(

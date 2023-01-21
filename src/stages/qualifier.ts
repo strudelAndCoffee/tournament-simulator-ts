@@ -5,11 +5,12 @@ import {
   generateQualifierMatchups,
   sortPlayersByWins,
 } from '../helpers/index.js'
+import qualifierWildcard from './qualifierWildcard.js'
 
 const STAGE = 'qualifier'
 
 export default function qualifierStage(PLAYERS: Player[]) {
-  const stage_stats: { [index: number]: RoundStatsType } = {}
+  const stage_stats: { [index: number | string]: RoundStatsType } = {}
 
   generateStageIDs(PLAYERS)
   const match_ups = generateQualifierMatchups()
@@ -24,35 +25,52 @@ export default function qualifierStage(PLAYERS: Player[]) {
   const { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED } =
     getQualifiedPlayers(PLAYERS)
 
+  const open_seats = 36 - QUALIFIED_PLAYERS.length
+  const wildcard_pool_size = open_seats * 2
+
+  // adjust wildcard players to fit pool size, or qualifier top ranked players if less than pool size
+  if (WILDCARD_PLAYERS.length < wildcard_pool_size) {
+    while (QUALIFIED_PLAYERS.length < 36) {
+      let player = WILDCARD_PLAYERS.shift()
+      QUALIFIED_PLAYERS.push(player!)
+    }
+    while (WILDCARD_PLAYERS.length) {
+      let player = WILDCARD_PLAYERS.pop()
+      DISQUALIFIED.push(player!)
+    }
+  } else if (WILDCARD_PLAYERS.length > wildcard_pool_size) {
+    while (WILDCARD_PLAYERS.length > wildcard_pool_size) {
+      let player = WILDCARD_PLAYERS.pop()
+      DISQUALIFIED.push(player!)
+    }
+  }
+
+  // run wildcard stage if wildcard players = pool size
+  if (WILDCARD_PLAYERS.length === wildcard_pool_size) {
+    const { IN, OUT, round_stats } = qualifierWildcard(WILDCARD_PLAYERS)
+    stage_stats['wildcard'] = round_stats
+
+    while (IN.length) {
+      let qualified = IN.pop()
+      QUALIFIED_PLAYERS.push(qualified!)
+    }
+    while (OUT.length) {
+      let disqualified = OUT.pop()
+      DISQUALIFIED.push(disqualified!)
+    }
+  }
+
   console.log('qualified players', QUALIFIED_PLAYERS.length)
   QUALIFIED_PLAYERS.forEach((p) => {
-    console.log(
-      p.xp,
-      p.games.qualifier.won,
-      p.games.qualifier.tied,
-      p.games.qualifier.lost,
-      p.games.qualifier.swept
-    )
+    console.log(p.xp, p.games.qualifier, p.games.qualifier_wildcard)
   })
   console.log('wildcard players', WILDCARD_PLAYERS.length)
   WILDCARD_PLAYERS.forEach((p) => {
-    console.log(
-      p.xp,
-      p.games.qualifier.won,
-      p.games.qualifier.tied,
-      p.games.qualifier.lost,
-      p.games.qualifier.swept
-    )
+    console.log(p.xp, p.games.qualifier, p.games.qualifier_wildcard)
   })
   console.log('disqualified players', DISQUALIFIED.length)
   DISQUALIFIED.forEach((p) => {
-    console.log(
-      p.xp,
-      p.games.qualifier.won,
-      p.games.qualifier.tied,
-      p.games.qualifier.lost,
-      p.games.qualifier.swept
-    )
+    console.log(p.xp, p.games.qualifier, p.games.qualifier_wildcard)
   })
 
   return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
