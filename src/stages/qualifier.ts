@@ -64,8 +64,8 @@ function getQualifiedPlayers(players: Player[]) {
   const DISQUALIFIED: Player[] = []
 
   // QUALIFIED win brackets
-  let qualify = true
-  while (qualify) {
+  let qualify_by_wins = true
+  while (qualify_by_wins) {
     let games_won = players[0].games.qualifier.won
     let player_bracket_count = 0
     let bracket = []
@@ -84,14 +84,14 @@ function getQualifiedPlayers(players: Player[]) {
         let player = bracket.pop()
         QUALIFIED_PLAYERS.push(player!)
       }
-      if (QUALIFIED_PLAYERS.length === 36) qualify = false
+      if (QUALIFIED_PLAYERS.length === 36) qualify_by_wins = false
     } else {
       // WILDCARD win bracket
       while (bracket.length) {
         let player = bracket.pop()
         WILDCARD_PLAYERS.push(player!)
       }
-      qualify = false
+      qualify_by_wins = false
     }
   }
 
@@ -102,8 +102,8 @@ function getQualifiedPlayers(players: Player[]) {
 
   sortPlayersByWins(WILDCARD_PLAYERS, STAGE)
 
-  let second_qualify = true
-  while (second_qualify) {
+  let qualify_by_ties = true
+  while (qualify_by_ties) {
     let games_tied = WILDCARD_PLAYERS[0].games.qualifier.tied
     let player_bracket_count = 0
     let bracket = []
@@ -123,7 +123,7 @@ function getQualifiedPlayers(players: Player[]) {
         QUALIFIED_PLAYERS.push(player!)
       }
     }
-    second_qualify = false
+    qualify_by_ties = false
   }
 
   return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
