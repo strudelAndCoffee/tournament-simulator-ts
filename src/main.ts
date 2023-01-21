@@ -3,8 +3,9 @@ import { qualifierStage } from './stages/index.js'
 
 function startGame() {
   const STARTING_PLAYERS = generateStartingPlayers()
-  const { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED } =
-    qualifierStage(STARTING_PLAYERS)
+  const { QUALIFIED_PLAYERS, DISQUALIFIED } = qualifierStage(STARTING_PLAYERS)
+  console.log(QUALIFIED_PLAYERS)
+  console.log(DISQUALIFIED)
   // const PLAYOFF_PLAYERS = groupStage(QUALIFIED_PLAYERS)
   // const QUARTER_FINALISTS = playoffStage(PLAYOFF_PLAYERS)
   // const SEMI_FINALISTS = quarterFinalStage(QUARTER_FINALISTS)

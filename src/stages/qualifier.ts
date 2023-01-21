@@ -1,5 +1,6 @@
 import { Player } from '../classes/Player/index.js'
-import BestOfThree, { RoundStatsType } from '../classes/Match/BestOfThree.js'
+import { RoundStatsType } from '../classes/Match/Match.js'
+import BestOfThree from '../classes/Match/BestOfThree.js'
 import {
   generateStageIDs,
   generateQualifierMatchups,
@@ -59,19 +60,6 @@ export default function qualifierStage(PLAYERS: Player[]) {
       DISQUALIFIED.push(disqualified!)
     }
   }
-
-  console.log('qualified players', QUALIFIED_PLAYERS.length)
-  QUALIFIED_PLAYERS.forEach((p) => {
-    console.log(p.xp, p.games.qualifier, p.games.qualifier_wildcard)
-  })
-  console.log('wildcard players', WILDCARD_PLAYERS.length)
-  WILDCARD_PLAYERS.forEach((p) => {
-    console.log(p.xp, p.games.qualifier, p.games.qualifier_wildcard)
-  })
-  console.log('disqualified players', DISQUALIFIED.length)
-  DISQUALIFIED.forEach((p) => {
-    console.log(p.xp, p.games.qualifier, p.games.qualifier_wildcard)
-  })
 
   return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
 }
@@ -144,5 +132,5 @@ function getQualifiedPlayers(players: Player[]) {
     qualify_by_ties = false
   }
 
-  return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
+  return { QUALIFIED_PLAYERS, DISQUALIFIED }
 }
