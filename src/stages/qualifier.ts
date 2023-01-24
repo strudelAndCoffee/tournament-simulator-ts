@@ -5,6 +5,7 @@ import {
   generateStageIDs,
   generateQualifierMatchups,
   sortPlayersByWins,
+  rankPlayers,
 } from '../helpers/index.js'
 import qualifierWildcard from './qualifierWildcard.js'
 
@@ -61,6 +62,7 @@ export default function qualifierStage(PLAYERS: Player[]) {
     }
   }
 
+  rankPlayers(QUALIFIED_PLAYERS, STAGE)
   return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
 }
 
@@ -132,5 +134,5 @@ function getQualifiedPlayers(players: Player[]) {
     qualify_by_ties = false
   }
 
-  return { QUALIFIED_PLAYERS, DISQUALIFIED }
+  return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
 }

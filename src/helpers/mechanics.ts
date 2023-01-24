@@ -60,4 +60,10 @@ function sortPlayersByWins(players: Player[], stage: string) {
   players.reverse()
 }
 
-export { rollDice, generateStageIDs, sortPlayersByWins }
+function rankPlayers(players: Player[], stage: string) {
+  for (let i = 0; i < players.length; i++) {
+    players[i].rank[stage] = i + 1
+  }
+}
+
+export { rollDice, generateStageIDs, sortPlayersByWins, rankPlayers }

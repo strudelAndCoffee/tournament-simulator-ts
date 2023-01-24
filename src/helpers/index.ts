@@ -1,6 +1,11 @@
 import { randomNumber, shuffleArray, swap } from './utils.js'
 import { TOTAL_PLAYERS, NAMES, generateStartingPlayers } from './setup.js'
-import { rollDice, generateStageIDs, sortPlayersByWins } from './mechanics.js'
+import {
+  rollDice,
+  generateStageIDs,
+  sortPlayersByWins,
+  rankPlayers,
+} from './mechanics.js'
 import { generateQualifierMatchups, GROUP_STAGE_PAIRS } from './matchups.js'
 
 export {
@@ -13,6 +18,7 @@ export {
   rollDice,
   generateStageIDs,
   sortPlayersByWins,
+  rankPlayers,
   generateQualifierMatchups,
   GROUP_STAGE_PAIRS,
 }

@@ -14,6 +14,9 @@ type Game = {
 type Stage = {
   [index: string]: Game
 }
+type Rank = {
+  [index: string]: number
+}
 export type PlayerRollType = {
   main_roll: number
   adv?: number
@@ -56,16 +59,7 @@ export default class Player {
   }
   public stage_id: number
   games: Stage
-  rank: {
-    global: number
-    qualifier: number
-    group_stage: number
-    playoff_stage: number
-    quarter_final: number
-    semi_final: number
-    third_place: number
-    final: number
-  }
+  rank: Rank
   advantages: {
     opponents: Record<number, number>
     types: Record<number, number>
