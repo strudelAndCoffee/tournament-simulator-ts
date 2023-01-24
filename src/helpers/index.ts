@@ -5,6 +5,7 @@ import {
   generateStageIDs,
   sortPlayersByWins,
   rankPlayers,
+  levelUpPlayers,
 } from './mechanics.js'
 import { generateQualifierMatchups, GROUP_STAGE_PAIRS } from './matchups.js'
 
@@ -19,6 +20,7 @@ export {
   generateStageIDs,
   sortPlayersByWins,
   rankPlayers,
+  levelUpPlayers,
   generateQualifierMatchups,
   GROUP_STAGE_PAIRS,
 }

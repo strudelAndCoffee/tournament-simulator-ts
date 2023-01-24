@@ -6,6 +6,7 @@ import {
   generateQualifierMatchups,
   sortPlayersByWins,
   rankPlayers,
+  levelUpPlayers,
 } from '../helpers/index.js'
 import qualifierWildcard from './qualifierWildcard.js'
 
@@ -63,6 +64,7 @@ export default function qualifierStage(PLAYERS: Player[]) {
   }
 
   rankPlayers(QUALIFIED_PLAYERS, STAGE)
+  levelUpPlayers(QUALIFIED_PLAYERS, false)
   return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
 }
 

@@ -66,4 +66,14 @@ function rankPlayers(players: Player[], stage: string) {
   }
 }
 
-export { rollDice, generateStageIDs, sortPlayersByWins, rankPlayers }
+function levelUpPlayers(players: Player[], no_wait: boolean) {
+  players.forEach((p) => p.level_up(no_wait))
+}
+
+export {
+  rollDice,
+  generateStageIDs,
+  sortPlayersByWins,
+  rankPlayers,
+  levelUpPlayers,
+}
