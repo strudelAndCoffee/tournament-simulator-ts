@@ -33,7 +33,6 @@ export default function qualifierStage(PLAYERS: Player[]) {
 
   // adjust wildcard players to fit pool size, or qualifier top ranked players if less than pool size
   if (WILDCARD_PLAYERS.length < wildcard_pool_size) {
-    console.log('wildcard players < wildcard pools size')
     while (QUALIFIED_PLAYERS.length < 36) {
       let player = WILDCARD_PLAYERS.shift()
       QUALIFIED_PLAYERS.push(player!)
@@ -42,21 +41,14 @@ export default function qualifierStage(PLAYERS: Player[]) {
       let player = WILDCARD_PLAYERS.pop()
       DISQUALIFIED.push(player!)
     }
-    console.log('wildcard length: ' + WILDCARD_PLAYERS.length)
-    console.log('qualified length: ' + QUALIFIED_PLAYERS.length)
-    console.log('disqualified length: ' + DISQUALIFIED.length)
   } else if (
     WILDCARD_PLAYERS.length > wildcard_pool_size &&
     wildcard_pool_size !== 0
   ) {
-    console.log('wildcard players > wildcard pools size')
     while (WILDCARD_PLAYERS.length > wildcard_pool_size) {
       let player = WILDCARD_PLAYERS.pop()
       DISQUALIFIED.push(player!)
     }
-    console.log('wildcard length: ' + WILDCARD_PLAYERS.length)
-    console.log('qualified length: ' + QUALIFIED_PLAYERS.length)
-    console.log('disqualified length: ' + DISQUALIFIED.length)
   }
 
   // run wildcard stage if wildcard players = pool size
@@ -65,13 +57,9 @@ export default function qualifierStage(PLAYERS: Player[]) {
     QUALIFIED_PLAYERS.length < 36 &&
     wildcard_pool_size !== 0
   ) {
-    console.log('wildcard players = wildcard pools size')
     const { in_group, out_group, round_stats } =
       qualifierWildcard(WILDCARD_PLAYERS)
     stage_stats['wildcard'] = round_stats
-
-    console.log('in_group group from wildcard')
-    in_group.forEach((p) => console.log(p))
 
     while (in_group.length) {
       let qualified = in_group.pop()
@@ -81,9 +69,6 @@ export default function qualifierStage(PLAYERS: Player[]) {
       let disqualified = out_group.pop()
       DISQUALIFIED.push(disqualified!)
     }
-    console.log('wildcard length: ' + WILDCARD_PLAYERS.length)
-    console.log('qualified length: ' + QUALIFIED_PLAYERS.length)
-    console.log('disqualified length: ' + DISQUALIFIED.length)
   }
 
   console.log(QUALIFIED_PLAYERS)
@@ -108,57 +93,86 @@ function getQualifiedPlayers(players: Player[]) {
       if (p.games.qualifier.won === games_won) player_bracket_count++
     })
 
-    for (let i = 0; i < player_bracket_count; i++) {
+    console.log('games_won ' + games_won)
+    console.log('player_bracket_count ' + player_bracket_count)
+
+    while (player_bracket_count > 0) {
       let player = players.shift()
       bracket.push(player)
+      player_bracket_count--
     }
 
+    console.log('bracket length ' + bracket.length)
+
     if (QUALIFIED_PLAYERS.length + bracket.length <= 36) {
+      console.log('qualified + bracket <= 36')
       while (bracket.length) {
         let player = bracket.pop()
-        QUALIFIED_PLAYERS.push(player!)
+        if (player) QUALIFIED_PLAYERS.push(player)
       }
       if (QUALIFIED_PLAYERS.length === 36) qualify_by_wins = false
     } else {
+      console.log('qualified + bracket > 36')
       // WILDCARD win bracket
       while (bracket.length) {
         let player = bracket.pop()
         WILDCARD_PLAYERS.push(player!)
       }
+      console.log('qualified length ' + QUALIFIED_PLAYERS.length)
+      console.log('wildcard length ' + WILDCARD_PLAYERS.length)
       qualify_by_wins = false
     }
   }
 
   while (players.length) {
     let player = players.pop()
-    DISQUALIFIED.push(player!)
+    if (player) DISQUALIFIED.push(player)
   }
 
-  sortPlayersByWins(WILDCARD_PLAYERS, STAGE)
+  if (WILDCARD_PLAYERS.length) {
+    sortPlayersByWins(WILDCARD_PLAYERS, STAGE)
 
-  let qualify_by_ties = true
-  while (qualify_by_ties) {
-    let games_tied = WILDCARD_PLAYERS[0].games.qualifier.tied
-    let player_bracket_count = 0
-    let bracket = []
+    let qualify_by_ties = true
+    while (qualify_by_ties) {
+      let games_tied = WILDCARD_PLAYERS[0].games.qualifier.tied
+      let player_bracket_count = 0
+      let bracket = []
 
-    WILDCARD_PLAYERS.forEach((p) => {
-      if (p.games.qualifier.tied === games_tied) player_bracket_count++
-    })
+      WILDCARD_PLAYERS.forEach((p) => {
+        if (p.games.qualifier.tied === games_tied) player_bracket_count++
+      })
 
-    for (let i = 0; i < player_bracket_count; i++) {
-      let player = WILDCARD_PLAYERS.shift()
-      bracket.push(player)
-    }
+      console.log('games_tied ' + games_tied)
+      console.log('player_bracket_count ' + player_bracket_count)
 
-    if (QUALIFIED_PLAYERS.length + bracket.length <= 36) {
-      while (bracket.length) {
-        let player = bracket.pop()
-        QUALIFIED_PLAYERS.push(player!)
+      while (player_bracket_count > 0) {
+        let player = WILDCARD_PLAYERS.shift()
+        bracket.push(player)
+        player_bracket_count--
+      }
+
+      console.log('bracket length ' + bracket.length)
+
+      if (QUALIFIED_PLAYERS.length + bracket.length <= 36) {
+        console.log('qualified + bracket after games_tied <= 36')
+        while (bracket.length) {
+          let player = bracket.pop()
+          QUALIFIED_PLAYERS.push(player!)
+        }
+        if (QUALIFIED_PLAYERS.length === 36) qualify_by_ties = false
+      } else {
+        while (bracket.length) {
+          let player = bracket.pop()
+          if (player) WILDCARD_PLAYERS.push(player)
+        }
+        qualify_by_ties = false
       }
     }
-    qualify_by_ties = false
   }
+
+  console.log(QUALIFIED_PLAYERS)
+  console.log(WILDCARD_PLAYERS)
+  console.log(DISQUALIFIED)
 
   return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
 }

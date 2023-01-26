@@ -30,9 +30,6 @@ export default function qualifierWildcard(players: Player[]) {
       STAGE
     )
 
-    console.log('qualified group from wildcard')
-    console.log(qualified)
-
     round_stats.matches.push({ match, p1, p2, round_results })
     in_group.push(qualified!)
     out_group.push(disqualified!)
