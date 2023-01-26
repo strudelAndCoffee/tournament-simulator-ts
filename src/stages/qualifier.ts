@@ -1,5 +1,5 @@
 import { Player } from '../classes/Player/index.js'
-import { RoundStatsType } from '../classes/Match/Match.js'
+import { StageStatsType } from '../main.js'
 import BestOfThree from '../classes/Match/BestOfThree.js'
 import {
   generateStageIDs,
@@ -13,7 +13,7 @@ import qualifierWildcard from './qualifierWildcard.js'
 const STAGE = 'qualifier'
 
 export default function qualifierStage(PLAYERS: Player[]) {
-  const stage_stats: { [index: number | string]: RoundStatsType } = {}
+  const stage_stats: StageStatsType = {}
 
   generateStageIDs(PLAYERS)
   const match_ups = generateQualifierMatchups()
@@ -33,6 +33,7 @@ export default function qualifierStage(PLAYERS: Player[]) {
 
   // adjust wildcard players to fit pool size, or qualifier top ranked players if less than pool size
   if (WILDCARD_PLAYERS.length < wildcard_pool_size) {
+    console.log('wildcard players < wildcard pools size')
     while (QUALIFIED_PLAYERS.length < 36) {
       let player = WILDCARD_PLAYERS.shift()
       QUALIFIED_PLAYERS.push(player!)
@@ -41,31 +42,54 @@ export default function qualifierStage(PLAYERS: Player[]) {
       let player = WILDCARD_PLAYERS.pop()
       DISQUALIFIED.push(player!)
     }
-  } else if (WILDCARD_PLAYERS.length > wildcard_pool_size) {
+    console.log('wildcard length: ' + WILDCARD_PLAYERS.length)
+    console.log('qualified length: ' + QUALIFIED_PLAYERS.length)
+    console.log('disqualified length: ' + DISQUALIFIED.length)
+  } else if (
+    WILDCARD_PLAYERS.length > wildcard_pool_size &&
+    wildcard_pool_size !== 0
+  ) {
+    console.log('wildcard players > wildcard pools size')
     while (WILDCARD_PLAYERS.length > wildcard_pool_size) {
       let player = WILDCARD_PLAYERS.pop()
       DISQUALIFIED.push(player!)
     }
+    console.log('wildcard length: ' + WILDCARD_PLAYERS.length)
+    console.log('qualified length: ' + QUALIFIED_PLAYERS.length)
+    console.log('disqualified length: ' + DISQUALIFIED.length)
   }
 
   // run wildcard stage if wildcard players = pool size
-  if (WILDCARD_PLAYERS.length === wildcard_pool_size) {
-    const { IN, OUT, round_stats } = qualifierWildcard(WILDCARD_PLAYERS)
+  if (
+    WILDCARD_PLAYERS.length === wildcard_pool_size &&
+    QUALIFIED_PLAYERS.length < 36 &&
+    wildcard_pool_size !== 0
+  ) {
+    console.log('wildcard players = wildcard pools size')
+    const { in_group, out_group, round_stats } =
+      qualifierWildcard(WILDCARD_PLAYERS)
     stage_stats['wildcard'] = round_stats
 
-    while (IN.length) {
-      let qualified = IN.pop()
+    console.log('in_group group from wildcard')
+    in_group.forEach((p) => console.log(p))
+
+    while (in_group.length) {
+      let qualified = in_group.pop()
       QUALIFIED_PLAYERS.push(qualified!)
     }
-    while (OUT.length) {
-      let disqualified = OUT.pop()
+    while (out_group.length) {
+      let disqualified = out_group.pop()
       DISQUALIFIED.push(disqualified!)
     }
+    console.log('wildcard length: ' + WILDCARD_PLAYERS.length)
+    console.log('qualified length: ' + QUALIFIED_PLAYERS.length)
+    console.log('disqualified length: ' + DISQUALIFIED.length)
   }
 
+  console.log(QUALIFIED_PLAYERS)
   rankPlayers(QUALIFIED_PLAYERS, STAGE)
   levelUpPlayers(QUALIFIED_PLAYERS, false)
-  return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
+  return { QUALIFIED_PLAYERS, DISQUALIFIED, stage_stats }
 }
 
 function getQualifiedPlayers(players: Player[]) {

@@ -9,8 +9,8 @@ export default function qualifierWildcard(players: Player[]) {
     stage_round: STAGE,
     matches: [],
   }
-  const IN: Player[] = []
-  const OUT: Player[] = []
+  let in_group: Player[] = []
+  let out_group: Player[] = []
 
   let match_ups: Player[][] = []
   while (players.length) {
@@ -30,10 +30,13 @@ export default function qualifierWildcard(players: Player[]) {
       STAGE
     )
 
+    console.log('qualified group from wildcard')
+    console.log(qualified)
+
     round_stats.matches.push({ match, p1, p2, round_results })
-    IN.push(qualified!)
-    OUT.push(disqualified!)
+    in_group.push(qualified!)
+    out_group.push(disqualified!)
   })
 
-  return { IN, OUT, round_stats }
+  return { in_group, out_group, round_stats }
 }

@@ -1,16 +1,23 @@
+import { RoundStatsType } from './classes/Match/Match.js'
 import { Player } from './classes/Player/index.js'
 import { generateStartingPlayers } from './helpers/setup.js'
-import { qualifierStage } from './stages/index.js'
+import { qualifierStage, groupStage } from './stages/index.js'
+
+export type StageStatsType = { [index: number | string]: RoundStatsType }
 
 const GAME_RECORDS: { [index: string]: string[] } = {}
 
 function startGame() {
   const STARTING_PLAYERS = generateStartingPlayers()
-  recordPlayers(STARTING_PLAYERS, 'starting_players')
+  recordPlayers(STARTING_PLAYERS, 'players_starting')
 
-  const { QUALIFIED_PLAYERS, DISQUALIFIED } = qualifierStage(STARTING_PLAYERS)
-  recordPlayers(QUALIFIED_PLAYERS, 'qualified_players')
-  recordPlayers(DISQUALIFIED, 'disqualified_players')
+  const { QUALIFIED_PLAYERS, DISQUALIFIED, stage_stats } =
+    qualifierStage(STARTING_PLAYERS)
+  recordPlayers(QUALIFIED_PLAYERS, 'players_qualified')
+  recordPlayers(DISQUALIFIED, 'players_disqualified')
+  recordStats(stage_stats, 'stage_stats_qualifier')
+
+  console.log(GAME_RECORDS)
 
   // const PLAYOFF_PLAYERS = groupStage(QUALIFIED_PLAYERS)
   // const QUARTER_FINALISTS = playoffStage(PLAYOFF_PLAYERS)
@@ -25,6 +32,16 @@ function recordPlayers(players: Player[], name: string) {
   players.forEach((p) => {
     let player = JSON.stringify(p)
     record.push(player)
+  })
+  GAME_RECORDS[name] = record
+}
+
+function recordStats(stats: StageStatsType, name: string) {
+  const record: string[] = []
+  const statsArray = Object.entries(stats)
+  statsArray.forEach((round) => {
+    let round_stat = JSON.stringify(round[1])
+    record.push(round_stat)
   })
   GAME_RECORDS[name] = record
 }

@@ -1,18 +1,17 @@
+export type GearType = {
+  primary: number[]
+  secondary: number[] | null
+}
+
 class PlayerClass {
   public id!: number
   public name!: string
-  public attack!: {
-    primary: number[]
-    secondary: number[] | null
-  }
-  public block!: {
-    primary: number[]
-    secondary: number[] | null
-  }
+  public attack!: GearType
+  public block!: GearType
   public armor!: number[]
   public upgrades!: {
-    min_roll: any[]
-    gear: any[]
+    min_roll: number[][]
+    gear: number[][]
   }
 }
 
@@ -73,7 +72,7 @@ class Samurai extends PlayerClass {
     }
     this.armor = [1, 4]
     this.upgrades = {
-      min_roll: [this.attack.primary, this.block.primary, this.armor],
+      min_roll: [this.armor, this.attack.primary, this.block.primary],
       gear: [this.armor],
     }
   }
@@ -94,7 +93,7 @@ class Gladiator extends PlayerClass {
     }
     this.armor = [1, 4]
     this.upgrades = {
-      min_roll: [this.block.primary],
+      min_roll: [this.block.primary, this.armor],
       gear: [this.block.primary, this.armor],
     }
   }
@@ -115,8 +114,8 @@ class Berserker extends PlayerClass {
     }
     this.armor = [0, 0]
     this.upgrades = {
-      min_roll: [this.block.primary, this.armor],
-      gear: [this.attack.primary, this.attack.secondary],
+      min_roll: [this.attack.primary, this.attack.secondary!, this.block.primary],
+      gear: [this.attack.primary, this.attack.secondary!],
     }
   }
 }
@@ -136,8 +135,8 @@ class Ninja extends PlayerClass {
     }
     this.armor = [0, 0]
     this.upgrades = {
-      min_roll: [this.attack.primary, this.attack.secondary, this.block.primary, this.block.secondary],
-      gear: [this.attack.primary, this.attack.secondary],
+      min_roll: [this.attack.primary, this.attack.secondary!, this.block.primary, this.block.secondary!],
+      gear: [this.attack.primary, this.attack.secondary!],
     }
   }
 }

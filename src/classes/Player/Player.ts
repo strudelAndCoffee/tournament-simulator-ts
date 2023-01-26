@@ -7,6 +7,7 @@ import {
   Berserker,
   Ninja,
 } from './index.js'
+import { GearType } from './PlayerClass.js'
 
 type Game = {
   [index: string]: number
@@ -36,18 +37,12 @@ export default class Player {
     | Berserker
     | Ninja
   public class_id!: number
-  attack: {
-    primary: number[]
-    secondary: number[] | null
-  }
-  block: {
-    primary: number[]
-    secondary: number[] | null
-  }
+  attack: GearType
+  block: GearType
   armor: number[]
   upgrades: {
-    min_roll: any[]
-    gear: any[]
+    min_roll: number[][]
+    gear: number[][]
   }
   xp: number
   level_ups: {
