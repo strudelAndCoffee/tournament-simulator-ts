@@ -17,9 +17,8 @@ function startGame() {
   recordPlayers(DISQUALIFIED, 'players_disqualified')
   recordStats(stage_stats, 'stage_stats_qualifier')
 
-  // console.log(GAME_RECORDS)
+  const PLAYOFF_PLAYERS = groupStage(QUALIFIED_PLAYERS)
 
-  // const PLAYOFF_PLAYERS = groupStage(QUALIFIED_PLAYERS)
   // const QUARTER_FINALISTS = playoffStage(PLAYOFF_PLAYERS)
   // const SEMI_FINALISTS = quarterFinalStage(QUARTER_FINALISTS)
   // const { FINALISTS, THIRD_PLACE_CONTENDERS } = semiFinalStage(SEMI_FINALISTS)

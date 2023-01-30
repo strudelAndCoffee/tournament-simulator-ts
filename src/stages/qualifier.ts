@@ -71,7 +71,6 @@ export default function qualifierStage(PLAYERS: Player[]) {
     }
   }
 
-  console.log(QUALIFIED_PLAYERS)
   rankPlayers(QUALIFIED_PLAYERS, STAGE)
   levelUpPlayers(QUALIFIED_PLAYERS, false)
   return { QUALIFIED_PLAYERS, DISQUALIFIED, stage_stats }
@@ -93,19 +92,13 @@ function getQualifiedPlayers(players: Player[]) {
       if (p.games.qualifier.won === games_won) player_bracket_count++
     })
 
-    console.log('games_won ' + games_won)
-    console.log('player_bracket_count ' + player_bracket_count)
-
     while (player_bracket_count > 0) {
       let player = players.shift()
       bracket.push(player)
       player_bracket_count--
     }
 
-    console.log('bracket length ' + bracket.length)
-
     if (QUALIFIED_PLAYERS.length + bracket.length <= 36) {
-      console.log('qualified + bracket <= 36')
       while (bracket.length) {
         let player = bracket.pop()
         if (player) QUALIFIED_PLAYERS.push(player)
@@ -118,8 +111,6 @@ function getQualifiedPlayers(players: Player[]) {
         let player = bracket.pop()
         WILDCARD_PLAYERS.push(player!)
       }
-      console.log('qualified length ' + QUALIFIED_PLAYERS.length)
-      console.log('wildcard length ' + WILDCARD_PLAYERS.length)
       qualify_by_wins = false
     }
   }
@@ -142,19 +133,13 @@ function getQualifiedPlayers(players: Player[]) {
         if (p.games.qualifier.tied === games_tied) player_bracket_count++
       })
 
-      console.log('games_tied ' + games_tied)
-      console.log('player_bracket_count ' + player_bracket_count)
-
       while (player_bracket_count > 0) {
         let player = WILDCARD_PLAYERS.shift()
         bracket.push(player)
         player_bracket_count--
       }
 
-      console.log('bracket length ' + bracket.length)
-
       if (QUALIFIED_PLAYERS.length + bracket.length <= 36) {
-        console.log('qualified + bracket after games_tied <= 36')
         while (bracket.length) {
           let player = bracket.pop()
           QUALIFIED_PLAYERS.push(player!)
@@ -169,10 +154,6 @@ function getQualifiedPlayers(players: Player[]) {
       }
     }
   }
-
-  console.log(QUALIFIED_PLAYERS)
-  console.log(WILDCARD_PLAYERS)
-  console.log(DISQUALIFIED)
 
   return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
 }
