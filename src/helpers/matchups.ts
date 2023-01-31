@@ -66,31 +66,31 @@ function generateQualifierMatchups() {
   return match_ups
 }
 
-const GROUP_STAGE_PAIRS = [
+const GROUP_STAGE_PAIRS: MatchUpsType[] = [
   [
-    [0, 1],
-    [2, 3],
-    [4, 5],
+    { A: 0, B: 1 },
+    { A: 2, B: 3 },
+    { A: 4, B: 5 },
   ],
   [
-    [0, 3],
-    [1, 4],
-    [2, 5],
+    { A: 0, B: 3 },
+    { A: 1, B: 4 },
+    { A: 2, B: 5 },
   ],
   [
-    [0, 5],
-    [1, 3],
-    [2, 4],
+    { A: 0, B: 5 },
+    { A: 1, B: 3 },
+    { A: 2, B: 4 },
   ],
   [
-    [0, 2],
-    [1, 5],
-    [3, 4],
+    { A: 0, B: 2 },
+    { A: 1, B: 5 },
+    { A: 3, B: 4 },
   ],
   [
-    [0, 4],
-    [1, 2],
-    [3, 5],
+    { A: 0, B: 4 },
+    { A: 1, B: 2 },
+    { A: 3, B: 5 },
   ],
 ]
 

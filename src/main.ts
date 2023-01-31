@@ -3,7 +3,9 @@ import { Player } from './classes/Player/index.js'
 import { generateStartingPlayers } from './helpers/setup.js'
 import { qualifierStage, groupStage } from './stages/index.js'
 
-export type StageStatsType = { [index: number | string]: RoundStatsType }
+export type StageStatsType = {
+  [index: number | string]: RoundStatsType | RoundStatsType[]
+}
 
 const GAME_RECORDS: { [index: string]: string[] } = {}
 
@@ -11,13 +13,17 @@ function startGame() {
   const STARTING_PLAYERS = generateStartingPlayers()
   recordPlayers(STARTING_PLAYERS, 'players_starting')
 
-  const { QUALIFIED_PLAYERS, DISQUALIFIED, stage_stats } =
+  const { QUALIFIED_PLAYERS, DISQUALIFIED, stage_stats_qualifier } =
     qualifierStage(STARTING_PLAYERS)
   recordPlayers(QUALIFIED_PLAYERS, 'players_qualified')
   recordPlayers(DISQUALIFIED, 'players_disqualified')
-  recordStats(stage_stats, 'stage_stats_qualifier')
+  recordStats(stage_stats_qualifier, 'stage_stats_qualifier')
 
-  const PLAYOFF_PLAYERS = groupStage(QUALIFIED_PLAYERS)
+  const { PLAYOFF_PLAYERS, NON_ADVANCING, stage_stats_group } =
+    groupStage(QUALIFIED_PLAYERS)
+  recordPlayers(PLAYOFF_PLAYERS, 'players_group_stage_advancing')
+  recordPlayers(NON_ADVANCING, 'players_group_stage_non_advancing')
+  recordStats(stage_stats_group, 'stage_stats_group')
 
   // const QUARTER_FINALISTS = playoffStage(PLAYOFF_PLAYERS)
   // const SEMI_FINALISTS = quarterFinalStage(QUARTER_FINALISTS)

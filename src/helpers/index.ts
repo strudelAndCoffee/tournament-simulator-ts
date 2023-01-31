@@ -1,5 +1,10 @@
 import { randomNumber, shuffleArray, swap } from './utils.js'
-import { TOTAL_PLAYERS, NAMES, generateStartingPlayers } from './setup.js'
+import {
+  TOTAL_PLAYERS,
+  NAMES,
+  generateStartingPlayers,
+  generateGroups,
+} from './setup.js'
 import {
   rollDice,
   generateStageIDs,
@@ -16,6 +21,7 @@ export {
   TOTAL_PLAYERS,
   NAMES,
   generateStartingPlayers,
+  generateGroups,
   rollDice,
   generateStageIDs,
   sortPlayersByWins,

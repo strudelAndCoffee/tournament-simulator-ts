@@ -13,7 +13,7 @@ import qualifierWildcard from './qualifierWildcard.js'
 const STAGE = 'qualifier'
 
 export default function qualifierStage(PLAYERS: Player[]) {
-  const stage_stats: StageStatsType = {}
+  const stage_stats_qualifier: StageStatsType = {}
 
   generateStageIDs(PLAYERS)
   const match_ups = generateQualifierMatchups()
@@ -21,7 +21,7 @@ export default function qualifierStage(PLAYERS: Player[]) {
     let round = i + 1
     let round_stats = BestOfThree.run_match(PLAYERS, match_ups[i], i, STAGE)
 
-    stage_stats[round] = round_stats
+    stage_stats_qualifier[round] = round_stats
   }
 
   sortPlayersByWins(PLAYERS, STAGE)
@@ -59,7 +59,7 @@ export default function qualifierStage(PLAYERS: Player[]) {
   ) {
     const { in_group, out_group, round_stats } =
       qualifierWildcard(WILDCARD_PLAYERS)
-    stage_stats['wildcard'] = round_stats
+    stage_stats_qualifier['wildcard'] = round_stats
 
     while (in_group.length) {
       let qualified = in_group.pop()
@@ -73,7 +73,7 @@ export default function qualifierStage(PLAYERS: Player[]) {
 
   rankPlayers(QUALIFIED_PLAYERS, STAGE)
   levelUpPlayers(QUALIFIED_PLAYERS, false)
-  return { QUALIFIED_PLAYERS, DISQUALIFIED, stage_stats }
+  return { QUALIFIED_PLAYERS, DISQUALIFIED, stage_stats_qualifier }
 }
 
 function getQualifiedPlayers(players: Player[]) {
@@ -105,7 +105,6 @@ function getQualifiedPlayers(players: Player[]) {
       }
       if (QUALIFIED_PLAYERS.length === 36) qualify_by_wins = false
     } else {
-      console.log('qualified + bracket > 36')
       // WILDCARD win bracket
       while (bracket.length) {
         let player = bracket.pop()
