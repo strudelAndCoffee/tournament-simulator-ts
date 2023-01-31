@@ -87,8 +87,8 @@ export default function groupStage(PLAYERS: Player[]) {
     NON_ADVANCING.push(disqualified!)
   }
 
-  // rankPlayers(PLAYOFF_PLAYERS, STAGE)
-  // levelUpPlayers(PLAYOFF_PLAYERS, false)
+  rankPlayers(PLAYOFF_PLAYERS, STAGE)
+  levelUpPlayers(PLAYOFF_PLAYERS, false)
   return {
     PLAYOFF_PLAYERS,
     NON_ADVANCING,
@@ -119,6 +119,7 @@ function getAdvancingPlayers(groups: GroupType) {
   }
 
   sortPlayersByWins(WILDCARD, STAGE)
+  sortPlayersByWins(PLAYOFF_PLAYERS, STAGE)
   for (let i = 0; i < 4; i++) {
     let player = WILDCARD.pop()
     NON_ADVANCING.push(player!)

@@ -25,6 +25,8 @@ function startGame() {
   recordPlayers(NON_ADVANCING, 'players_group_stage_non_advancing')
   recordStats(stage_stats_group, 'stage_stats_group')
 
+  console.log(PLAYOFF_PLAYERS)
+
   // const QUARTER_FINALISTS = playoffStage(PLAYOFF_PLAYERS)
   // const SEMI_FINALISTS = quarterFinalStage(QUARTER_FINALISTS)
   // const { FINALISTS, THIRD_PLACE_CONTENDERS } = semiFinalStage(SEMI_FINALISTS)
