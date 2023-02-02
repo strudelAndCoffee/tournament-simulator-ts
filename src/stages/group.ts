@@ -13,9 +13,9 @@ import groupWildcard from './groupWildcard.js'
 
 const STAGE = 'group_stage'
 
-export default function groupStage(PLAYERS: Player[]) {
-  const stage_stats_group: StageStatsType = {}
-  const GROUPS = generateGroups(PLAYERS)
+export default function groupStage(players: Player[]) {
+  const stage_stats: StageStatsType = {}
+  const GROUPS = generateGroups(players)
 
   for (let i = 0; i < 2; i++) {
     let stage_round = i + 1
@@ -69,36 +69,35 @@ export default function groupStage(PLAYERS: Player[]) {
       )
     }
 
-    stage_stats_group[stage_round] = stage_round_stats
+    stage_stats[stage_round] = stage_round_stats
   }
 
-  const { PLAYOFF_PLAYERS, WILDCARD, NON_ADVANCING } =
-    getAdvancingPlayers(GROUPS)
+  const { QUALIFIED, WILDCARD, DISQUALIFIED } = getAdvancingPlayers(GROUPS)
 
   const { in_group, out_group, round_stats } = groupWildcard(WILDCARD)
-  stage_stats_group['wildcard'] = round_stats
+  stage_stats['wildcard'] = round_stats
 
   while (in_group.length) {
     let qualified = in_group.pop()
-    PLAYOFF_PLAYERS.push(qualified!)
+    QUALIFIED.push(qualified!)
   }
   while (out_group.length) {
     let disqualified = out_group.pop()
-    NON_ADVANCING.push(disqualified!)
+    DISQUALIFIED.push(disqualified!)
   }
 
-  rankPlayers(PLAYOFF_PLAYERS, STAGE)
-  levelUpPlayers(PLAYOFF_PLAYERS, false)
+  rankPlayers(QUALIFIED, STAGE)
+  levelUpPlayers(QUALIFIED, false)
   return {
-    PLAYOFF_PLAYERS,
-    NON_ADVANCING,
-    stage_stats_group,
+    QUALIFIED,
+    DISQUALIFIED,
+    stage_stats,
   }
 }
 
 function getAdvancingPlayers(groups: GroupType) {
-  const PLAYOFF_PLAYERS: Player[] = []
-  const NON_ADVANCING: Player[] = []
+  const QUALIFIED: Player[] = []
+  const DISQUALIFIED: Player[] = []
   const WILDCARD: Player[] = []
 
   sortPlayersByWins(groups.A, STAGE)
@@ -112,18 +111,18 @@ function getAdvancingPlayers(groups: GroupType) {
     for (let i = 0; i < 6; i++) {
       let player = groups[g].pop()
 
-      if (i < 2) NON_ADVANCING.push(player!)
+      if (i < 2) DISQUALIFIED.push(player!)
       if (i >= 2 && i < 4) WILDCARD.push(player!)
-      if (i >= 4) PLAYOFF_PLAYERS.push(player!)
+      if (i >= 4) QUALIFIED.push(player!)
     }
   }
 
   sortPlayersByWins(WILDCARD, STAGE)
-  sortPlayersByWins(PLAYOFF_PLAYERS, STAGE)
+  sortPlayersByWins(QUALIFIED, STAGE)
   for (let i = 0; i < 4; i++) {
     let player = WILDCARD.pop()
-    NON_ADVANCING.push(player!)
+    DISQUALIFIED.push(player!)
   }
 
-  return { PLAYOFF_PLAYERS, WILDCARD, NON_ADVANCING }
+  return { QUALIFIED, WILDCARD, DISQUALIFIED }
 }

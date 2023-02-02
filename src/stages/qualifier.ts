@@ -12,30 +12,30 @@ import qualifierWildcard from './qualifierWildcard.js'
 
 const STAGE = 'qualifier'
 
-export default function qualifierStage(PLAYERS: Player[]) {
-  const stage_stats_qualifier: StageStatsType = {}
+export default function qualifierStage(players: Player[]) {
+  const stage_stats: StageStatsType = {}
 
-  generateStageIDs(PLAYERS)
+  generateStageIDs(players)
   const match_ups = generateQualifierMatchups()
   for (let i = 0; i < match_ups.length; i++) {
     let round = i + 1
-    let round_stats = BestOfThree.run_match(PLAYERS, match_ups[i], i, STAGE)
+    let round_stats = BestOfThree.run_match(players, match_ups[i], i, STAGE)
 
-    stage_stats_qualifier[round] = round_stats
+    stage_stats[round] = round_stats
   }
 
-  sortPlayersByWins(PLAYERS, STAGE)
-  const { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED } =
-    getQualifiedPlayers(PLAYERS)
+  sortPlayersByWins(players, STAGE)
+  const { QUALIFIED, WILDCARD_PLAYERS, DISQUALIFIED } =
+    getQualifiedPlayers(players)
 
-  const open_seats = 36 - QUALIFIED_PLAYERS.length
+  const open_seats = 36 - QUALIFIED.length
   const wildcard_pool_size = open_seats * 2
 
   // adjust wildcard players to fit pool size, or qualifier top ranked players if less than pool size
   if (WILDCARD_PLAYERS.length < wildcard_pool_size) {
-    while (QUALIFIED_PLAYERS.length < 36) {
+    while (QUALIFIED.length < 36) {
       let player = WILDCARD_PLAYERS.shift()
-      QUALIFIED_PLAYERS.push(player!)
+      QUALIFIED.push(player!)
     }
     while (WILDCARD_PLAYERS.length) {
       let player = WILDCARD_PLAYERS.pop()
@@ -54,16 +54,16 @@ export default function qualifierStage(PLAYERS: Player[]) {
   // run wildcard stage if wildcard players = pool size
   if (
     WILDCARD_PLAYERS.length === wildcard_pool_size &&
-    QUALIFIED_PLAYERS.length < 36 &&
+    QUALIFIED.length < 36 &&
     wildcard_pool_size !== 0
   ) {
     const { in_group, out_group, round_stats } =
       qualifierWildcard(WILDCARD_PLAYERS)
-    stage_stats_qualifier['wildcard'] = round_stats
+    stage_stats['wildcard'] = round_stats
 
     while (in_group.length) {
       let qualified = in_group.pop()
-      QUALIFIED_PLAYERS.push(qualified!)
+      QUALIFIED.push(qualified!)
     }
     while (out_group.length) {
       let disqualified = out_group.pop()
@@ -71,13 +71,13 @@ export default function qualifierStage(PLAYERS: Player[]) {
     }
   }
 
-  rankPlayers(QUALIFIED_PLAYERS, STAGE)
-  levelUpPlayers(QUALIFIED_PLAYERS, false)
-  return { QUALIFIED_PLAYERS, DISQUALIFIED, stage_stats_qualifier }
+  rankPlayers(QUALIFIED, STAGE)
+  levelUpPlayers(QUALIFIED, false)
+  return { QUALIFIED, DISQUALIFIED, stage_stats }
 }
 
 function getQualifiedPlayers(players: Player[]) {
-  const QUALIFIED_PLAYERS: Player[] = []
+  const QUALIFIED: Player[] = []
   const WILDCARD_PLAYERS: Player[] = []
   const DISQUALIFIED: Player[] = []
 
@@ -98,12 +98,12 @@ function getQualifiedPlayers(players: Player[]) {
       player_bracket_count--
     }
 
-    if (QUALIFIED_PLAYERS.length + bracket.length <= 36) {
+    if (QUALIFIED.length + bracket.length <= 36) {
       while (bracket.length) {
         let player = bracket.pop()
-        if (player) QUALIFIED_PLAYERS.push(player)
+        if (player) QUALIFIED.push(player)
       }
-      if (QUALIFIED_PLAYERS.length === 36) qualify_by_wins = false
+      if (QUALIFIED.length === 36) qualify_by_wins = false
     } else {
       // WILDCARD win bracket
       while (bracket.length) {
@@ -138,12 +138,12 @@ function getQualifiedPlayers(players: Player[]) {
         player_bracket_count--
       }
 
-      if (QUALIFIED_PLAYERS.length + bracket.length <= 36) {
+      if (QUALIFIED.length + bracket.length <= 36) {
         while (bracket.length) {
           let player = bracket.pop()
-          QUALIFIED_PLAYERS.push(player!)
+          QUALIFIED.push(player!)
         }
-        if (QUALIFIED_PLAYERS.length === 36) qualify_by_ties = false
+        if (QUALIFIED.length === 36) qualify_by_ties = false
       } else {
         while (bracket.length) {
           let player = bracket.pop()
@@ -154,5 +154,5 @@ function getQualifiedPlayers(players: Player[]) {
     }
   }
 
-  return { QUALIFIED_PLAYERS, WILDCARD_PLAYERS, DISQUALIFIED }
+  return { QUALIFIED, WILDCARD_PLAYERS, DISQUALIFIED }
 }

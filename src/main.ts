@@ -1,37 +1,36 @@
 import { RoundStatsType } from './classes/Match/Match.js'
 import { Player } from './classes/Player/index.js'
 import { generateStartingPlayers } from './helpers/setup.js'
-import { qualifierStage, groupStage } from './stages/index.js'
+import { STAGES } from './stages/index.js'
 
 export type StageStatsType = {
   [index: number | string]: RoundStatsType | RoundStatsType[]
 }
+type GameRecordType = { [index: string]: string[] }
 
-const GAME_RECORDS: { [index: string]: string[] } = {}
+const GAME_RECORDS: GameRecordType = {}
 
 function startGame() {
   const STARTING_PLAYERS = generateStartingPlayers()
-  recordPlayers(STARTING_PLAYERS, 'players_starting')
+  recordPlayers(STARTING_PLAYERS, 'starting_players')
 
-  const { QUALIFIED_PLAYERS, DISQUALIFIED, stage_stats_qualifier } =
-    qualifierStage(STARTING_PLAYERS)
-  recordPlayers(QUALIFIED_PLAYERS, 'players_qualified')
-  recordPlayers(DISQUALIFIED, 'players_disqualified')
-  recordStats(stage_stats_qualifier, 'stage_stats_qualifier')
+  let current_players = STARTING_PLAYERS
+  STAGES.forEach(({ name, stage }) => {
+    const { QUALIFIED, DISQUALIFIED, stage_stats } = stage(current_players)
 
-  const { PLAYOFF_PLAYERS, NON_ADVANCING, stage_stats_group } =
-    groupStage(QUALIFIED_PLAYERS)
-  recordPlayers(PLAYOFF_PLAYERS, 'players_group_stage_advancing')
-  recordPlayers(NON_ADVANCING, 'players_group_stage_non_advancing')
-  recordStats(stage_stats_group, 'stage_stats_group')
+    recordPlayers(QUALIFIED, `${name}_stage_qualified_players`)
+    recordPlayers(DISQUALIFIED, `${name}_stage_disqualified_players`)
+    recordStats(stage_stats, `${name}_stage_stats`)
 
-  console.log(PLAYOFF_PLAYERS)
+    current_players = QUALIFIED
+  })
 
-  // const QUARTER_FINALISTS = playoffStage(PLAYOFF_PLAYERS)
   // const SEMI_FINALISTS = quarterFinalStage(QUARTER_FINALISTS)
   // const { FINALISTS, THIRD_PLACE_CONTENDERS } = semiFinalStage(SEMI_FINALISTS)
   // const { THIRD_PLACE, FOURTH_PLACE } = thirdPlaceFinal(FINALISTS)
   // const { CHAMPION, SECOND_PLACE } = grandFinal(FINALISTS)
+
+  console.log(GAME_RECORDS)
 }
 
 function recordPlayers(players: Player[], name: string) {
