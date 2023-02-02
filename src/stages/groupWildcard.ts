@@ -1,6 +1,6 @@
-import { RoundStatsType } from '../classes/Match/Match'
-import Wildcard from '../classes/Match/Wildcard'
-import { Player } from '../classes/Player'
+import { RoundStatsType } from '../classes/Match/Match.js'
+import { Wildcard } from '../classes/Match/index.js'
+import { Player } from '../classes/Player/index.js'
 
 const STAGE = 'group_stage_wildcard'
 

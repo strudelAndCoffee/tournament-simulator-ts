@@ -1,5 +1,5 @@
 import { Player } from '../classes/Player/index.js'
-import BestOfThree from '../classes/Match/BestOfThree.js'
+import { BestOfThree } from '../classes/Match/index.js'
 import { StageStatsType } from '../main.js'
 import {
   generateGroups,

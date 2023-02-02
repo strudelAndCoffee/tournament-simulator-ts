@@ -1,6 +1,6 @@
 import { Player } from '../classes/Player/index.js'
 import { RoundStatsType } from '../classes/Match/Match.js'
-import Wildcard from '../classes/Match/Wildcard.js'
+import { Wildcard } from '../classes/Match/index.js'
 
 const STAGE = 'qualifier_wildcard'
 
