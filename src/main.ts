@@ -25,11 +25,6 @@ function startGame() {
     current_players = QUALIFIED
   })
 
-  // const SEMI_FINALISTS = quarterFinalStage(QUARTER_FINALISTS)
-  // const { FINALISTS, THIRD_PLACE_CONTENDERS } = semiFinalStage(SEMI_FINALISTS)
-  // const { THIRD_PLACE, FOURTH_PLACE } = thirdPlaceFinal(FINALISTS)
-  // const { CHAMPION, SECOND_PLACE } = grandFinal(FINALISTS)
-
   console.log(GAME_RECORDS)
 }
 
