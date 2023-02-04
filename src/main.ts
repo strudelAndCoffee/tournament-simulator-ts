@@ -15,7 +15,7 @@ function startGame() {
   recordPlayers(STARTING_PLAYERS, 'starting_players')
 
   let current_players = STARTING_PLAYERS
-  STAGES.forEach(({ name, stage }) => {
+  STAGES.forEach(({ name, stage }, i) => {
     const { QUALIFIED, DISQUALIFIED, stage_stats } = stage(current_players)
 
     recordPlayers(QUALIFIED, `${name}_stage_qualified_players`)
@@ -23,6 +23,10 @@ function startGame() {
     recordStats(stage_stats, `${name}_stage_stats`)
 
     current_players = QUALIFIED
+
+    console.log(i)
+    QUALIFIED.forEach((p) => console.log(p.games.total.played, p.games))
+    DISQUALIFIED.forEach((p) => console.log(p.games.total.played, p.games))
   })
 }
 

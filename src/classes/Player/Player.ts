@@ -55,7 +55,7 @@ export default class Player {
   public stage_id: number
   games: Stage
   rank: Rank
-  playoff_side: string
+  playoff_side: string | null
   advantages: {
     opponents: Record<number, number>
     types: Record<number, number>
@@ -126,24 +126,6 @@ export default class Player {
         lost: 0,
         swept: 0,
       },
-      quarter_final: {
-        played: 0,
-        won: 0,
-        lost: 0,
-        swept: 0,
-      },
-      semi_final: {
-        played: 0,
-        won: 0,
-        lost: 0,
-        swept: 0,
-      },
-      third_place: {
-        played: 0,
-        won: 0,
-        lost: 0,
-        swept: 0,
-      },
       final: {
         played: 0,
         won: 0,
@@ -161,7 +143,7 @@ export default class Player {
       third_place: 0,
       final: 0,
     }
-    this.playoff_side = ''
+    this.playoff_side = null
 
     this.advantages = {
       opponents: {},
