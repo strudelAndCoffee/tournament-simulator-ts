@@ -47,11 +47,41 @@ export default function playoffStage(players: Player[]) {
     stage_stats[stage_round] = round_stats
   })
 
-  console.log(WEST)
-  console.log(EAST)
+  const { QUALIFIED, DISQUALIFIED } = getAdvancingPlayers(WEST, EAST)
+  console.log(QUALIFIED)
+  console.log(DISQUALIFIED)
 
+  return { QUALIFIED, DISQUALIFIED, stage_stats }
+}
+
+function getAdvancingPlayers(west: Player[][], east: Player[][]) {
   const QUALIFIED: Player[] = []
   const DISQUALIFIED: Player[] = []
 
-  return { QUALIFIED, DISQUALIFIED, stage_stats }
+  west.forEach((match) => {
+    let p1 = match[0]
+    let p2 = match[1]
+
+    if (p1.games.playoff_stage.won > p2.games.playoff_stage.won) {
+      QUALIFIED.push(p1)
+      DISQUALIFIED.push(p2)
+    } else {
+      QUALIFIED.push(p2)
+      DISQUALIFIED.push(p1)
+    }
+  })
+  east.forEach((match) => {
+    let p1 = match[0]
+    let p2 = match[1]
+
+    if (p1.games.playoff_stage.won > p2.games.playoff_stage.won) {
+      QUALIFIED.push(p1)
+      DISQUALIFIED.push(p2)
+    } else {
+      QUALIFIED.push(p2)
+      DISQUALIFIED.push(p1)
+    }
+  })
+
+  return { QUALIFIED, DISQUALIFIED }
 }
