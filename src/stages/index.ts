@@ -3,7 +3,7 @@ import { StageStatsType } from '../main.js'
 import qualifierStage from './qualifier.js'
 import groupStage from './group.js'
 import playoffStage from './playoff.js'
-// import finalStage from './final.js'
+import finalStage from './final.js'
 
 type Stage = (players: Player[]) => {
   QUALIFIED: Player[]
@@ -17,5 +17,5 @@ export const STAGES: { name: string; stage: Stage }[] = [
   { name: 'playoff', stage: playoffStage },
   { name: 'quarter_final', stage: playoffStage },
   { name: 'semi_final', stage: playoffStage },
-  // { name: 'final', stage: finalStage }
+  { name: 'final', stage: finalStage },
 ]
