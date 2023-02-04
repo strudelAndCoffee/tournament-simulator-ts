@@ -72,7 +72,7 @@ class Samurai extends PlayerClass {
     }
     this.armor = [1, 4]
     this.upgrades = {
-      min_roll: [this.armor, this.attack.primary, this.block.primary],
+      min_roll: [this.block.primary, this.armor],
       gear: [this.armor],
     }
   }
@@ -94,7 +94,7 @@ class Gladiator extends PlayerClass {
     this.armor = [1, 4]
     this.upgrades = {
       min_roll: [this.block.primary, this.armor],
-      gear: [this.block.primary, this.armor],
+      gear: [this.block.primary],
     }
   }
 }
@@ -135,7 +135,7 @@ class Ninja extends PlayerClass {
     }
     this.armor = [0, 0]
     this.upgrades = {
-      min_roll: [this.attack.primary, this.attack.secondary!, this.block.primary, this.block.secondary!],
+      min_roll: [this.attack.primary, this.attack.secondary!],
       gear: [this.attack.primary, this.attack.secondary!],
     }
   }

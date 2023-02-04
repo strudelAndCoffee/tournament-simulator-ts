@@ -9,13 +9,14 @@ export type StageStatsType = {
 type GameRecordType = { [index: string]: string[] }
 
 const GAME_RECORDS: GameRecordType = {}
+const type_count: Record<string, number> = {}
 
 function startGame() {
   const STARTING_PLAYERS = generateStartingPlayers()
   recordPlayers(STARTING_PLAYERS, 'starting_players')
 
   let current_players = STARTING_PLAYERS
-  STAGES.forEach(({ name, stage }, i) => {
+  STAGES.forEach(({ name, stage }) => {
     const { QUALIFIED, DISQUALIFIED, stage_stats } = stage(current_players)
 
     recordPlayers(QUALIFIED, `${name}_stage_qualified_players`)
@@ -23,10 +24,14 @@ function startGame() {
     recordStats(stage_stats, `${name}_stage_stats`)
 
     current_players = QUALIFIED
+  })
 
-    console.log(i)
-    QUALIFIED.forEach((p) => console.log(p.games.total.played, p.games))
-    DISQUALIFIED.forEach((p) => console.log(p.games.total.played, p.games))
+  current_players.forEach((p) => {
+    if (!type_count[p.player_class.name]) {
+      type_count[p.player_class.name] = 1
+    } else {
+      type_count[p.player_class.name]++
+    }
   })
 }
 
@@ -49,4 +54,8 @@ function recordStats(stats: StageStatsType, name: string) {
   GAME_RECORDS[name] = record
 }
 
-startGame()
+for (let i = 1000; i > 0; i--) {
+  startGame()
+}
+
+console.log(type_count)
