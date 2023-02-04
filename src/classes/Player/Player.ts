@@ -55,6 +55,7 @@ export default class Player {
   public stage_id: number
   games: Stage
   rank: Rank
+  playoff_side: string
   advantages: {
     opponents: Record<number, number>
     types: Record<number, number>
@@ -160,6 +161,7 @@ export default class Player {
       third_place: 0,
       final: 0,
     }
+    this.playoff_side = ''
 
     this.advantages = {
       opponents: {},

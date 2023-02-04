@@ -24,8 +24,6 @@ function startGame() {
 
     current_players = QUALIFIED
   })
-
-  console.log(GAME_RECORDS)
 }
 
 function recordPlayers(players: Player[], name: string) {
