@@ -1,22 +1,23 @@
 import { Player } from '../classes/Player'
 import { StageStatsType } from '../main'
-import { BestOfFive } from '../classes/Match'
+import { PlayoffMatch } from '../classes/Match'
 import { levelUpPlayers, rankPlayers, sortPlayersByWins } from '../helpers'
 
-const STAGE = 'playoff_stage'
+let STAGE: string
 
-export default function playoffStage(players: Player[]) {
+export default function playoffStage(players: Player[], stage_name: string) {
+  STAGE = stage_name
   const stage_stats: StageStatsType = {}
   const { WEST, EAST } = assignSides(players)
 
   WEST.forEach((match, i) => {
-    let stage_round = 'west' + i + 1
-    let round_stats = BestOfFive.run_match(match, i, STAGE)
+    let stage_round = 'west_' + i + 1
+    let round_stats = PlayoffMatch.run_match(match, i, STAGE)
     stage_stats[stage_round] = round_stats
   })
   EAST.forEach((match, i) => {
-    let stage_round = 'east' + i + 1
-    let round_stats = BestOfFive.run_match(match, i, STAGE)
+    let stage_round = 'east_' + i + 1
+    let round_stats = PlayoffMatch.run_match(match, i, STAGE)
     stage_stats[stage_round] = round_stats
   })
 

@@ -126,6 +126,18 @@ export default class Player {
         lost: 0,
         swept: 0,
       },
+      quarter_final: {
+        played: 0,
+        won: 0,
+        lost: 0,
+        swept: 0,
+      },
+      semi_final: {
+        played: 0,
+        won: 0,
+        lost: 0,
+        swept: 0,
+      },
       final: {
         played: 0,
         won: 0,

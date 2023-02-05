@@ -1,7 +1,7 @@
 import Match from './Match.js'
 import Wildcard from './Wildcard.js'
 import BestOfThree from './BestOfThree.js'
-import BestOfFive from './BestOfFive.js'
-import BestOfSeven from './BestOfSeven.js'
+import PlayoffMatch from './PlayoffMatch.js'
+import FinalMatch from './FinalMatch.js'
 
-export { Match, Wildcard, BestOfThree, BestOfFive, BestOfSeven }
+export { Match, Wildcard, BestOfThree, PlayoffMatch, FinalMatch }

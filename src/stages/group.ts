@@ -11,9 +11,10 @@ import {
 import { GroupType } from '../helpers/setup.js'
 import groupWildcard from './groupWildcard.js'
 
-const STAGE = 'group_stage'
+let STAGE: string
 
-export default function groupStage(players: Player[]) {
+export default function groupStage(players: Player[], stage_name: string) {
+  STAGE = stage_name
   const stage_stats: StageStatsType = {}
   const GROUPS = generateGroups(players)
 

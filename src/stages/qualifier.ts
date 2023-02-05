@@ -10,9 +10,10 @@ import {
 } from '../helpers/index.js'
 import qualifierWildcard from './qualifierWildcard.js'
 
-const STAGE = 'qualifier'
+let STAGE: string
 
-export default function qualifierStage(players: Player[]) {
+export default function qualifierStage(players: Player[], stage_name: string) {
+  STAGE = stage_name
   const stage_stats: StageStatsType = {}
 
   generateStageIDs(players)

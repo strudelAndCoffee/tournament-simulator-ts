@@ -14,7 +14,7 @@ export type RoundResultType = {
 export type RoundStatsType = {
   stage_round: string
   matches: {
-    match: number
+    match?: number
     p1: Player
     p2: Player
     round_results: RoundResultType[]

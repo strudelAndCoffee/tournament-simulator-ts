@@ -31,7 +31,7 @@ class Knight extends PlayerClass {
     this.armor = [1, 6]
     this.upgrades = {
       min_roll: [this.attack.primary, this.block.primary, this.armor],
-      gear: [this.attack.primary, this.block.primary, this.armor],
+      gear: [this.attack.primary, this.block.primary],
     }
   }
 }
@@ -49,10 +49,10 @@ class Vanguard extends PlayerClass {
       primary: [1, 10],
       secondary: null,
     }
-    this.armor = [1, 6]
+    this.armor = [1, 8]
     this.upgrades = {
-      min_roll: [this.attack.primary, this.block.primary, this.armor],
-      gear: [this.attack.primary],
+      min_roll: [this.attack.primary, this.block.primary],
+      gear: [this.attack.primary, this.block.primary],
     }
   }
 }
@@ -67,13 +67,13 @@ class Samurai extends PlayerClass {
       secondary: null,
     }
     this.block = {
-      primary: [1, 6],
+      primary: [1, 4],
       secondary: null,
     }
-    this.armor = [1, 4]
+    this.armor = [1, 6]
     this.upgrades = {
-      min_roll: [this.block.primary, this.armor],
-      gear: [this.armor],
+      min_roll: [this.attack.primary, this.block.primary],
+      gear: [this.block.primary],
     }
   }
 }
@@ -88,12 +88,12 @@ class Gladiator extends PlayerClass {
       secondary: null,
     }
     this.block = {
-      primary: [1, 4],
+      primary: [1, 8],
       secondary: null,
     }
-    this.armor = [1, 4]
+    this.armor = [0, 0]
     this.upgrades = {
-      min_roll: [this.block.primary, this.armor],
+      min_roll: [this.attack.primary, this.block.primary],
       gear: [this.block.primary],
     }
   }
